@@ -1,0 +1,23 @@
+.description-container {
+    padding-top: 1.5em;
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 4.5rem;
+    color: #1279F2;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.author {
+    margin-top: 0;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.description {
+    font-weight: 800;
+    margin-top: 0px;
+}
+
