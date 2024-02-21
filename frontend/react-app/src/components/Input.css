@@ -1,0 +1,28 @@
+.searchbar {
+    display: flex;
+    border: 3px solid #9CADE9;
+    border-radius: 0.25rem;
+    padding: 10px;
+    margin-top: 50px;
+}
+
+input {
+    flex: 1;
+    border: none;
+    color: #9CADE9;
+}
+
+input:focus {
+    border: none;
+    outline: none;
+}
+
+input::placeholder {
+    color: #9CADE9;
+    font-weight: 700;
+}
+
+.searchbar svg {
+    width: 25px;
+    margin-right: 20px;
+}
