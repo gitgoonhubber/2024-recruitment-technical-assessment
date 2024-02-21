@@ -1,11 +1,13 @@
 .sidebar {
     position: fixed;
-    background-color: #F9FAFB;
+    background-color: red;
+    /* #F9FAFB; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
     width: 5.5%;
+    margin-right: 8%;
 }
 
 .top,
@@ -17,7 +19,7 @@
 }
 
 .top {
-    margin-top: 23%;
+    padding-top: 30%;
 }
 
 .top-icons {
