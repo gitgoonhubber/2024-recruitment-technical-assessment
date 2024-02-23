@@ -1,15 +1,16 @@
 .searchbar {
     display: flex;
-    border: 3px solid #9CADE9;
+    border: 2.5px solid #9CADE9;
     border-radius: 0.25rem;
-    padding: 10px;
-    margin-top: 50px;
+    padding: 7px;
+    margin-top: 40px;
 }
 
 input {
     flex: 1;
     border: none;
     color: #9CADE9;
+    font-weight: 700;
 }
 
 input:focus {
@@ -25,4 +26,29 @@ input::placeholder {
 .searchbar svg {
     width: 25px;
     margin-right: 20px;
+}
+
+.blank-box {
+    border: 2.5px solid black;
+    border-radius: 0.25rem;
+    border-top: none;
+    width: auto;
+    height: 300px;
+    margin-bottom: -200px;
+    z-index: 1;
+    background-color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: end;
+    align-items: start;
+}
+
+.close-box {
+    background-color: #1279F2;
+    color: white;
+    border: 0;
+    font-size: 1rem;
+    border-radius: 999px;
+    padding: 10px 15px;
+    font-weight: 1000;
 }
