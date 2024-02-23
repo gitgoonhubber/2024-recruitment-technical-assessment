@@ -8,6 +8,12 @@ h1 {
     color: #1279F2;
     margin-top: 0;
     margin-bottom: 0;
+    letter-spacing: -2.5px;
+    max-width: 400px;
+}
+
+h1:hover {
+    cursor: pointer;
 }
 
 .author {
