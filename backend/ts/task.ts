@@ -72,21 +72,14 @@ function largestFileSize(files: FileData[]): number {
     
     for (const file of files) {
         fileMap.set(file.id, file)
+        fileSizes.set(file.id, {size: 0})
     } 
 
     for (const file of files) {
-        if (!fileSizes.has(file.id)) {
-            fileSizes.set(file.id, {size: 0})
-        }
-
         fileSizes.get(file.id)!.size += file.size
 
         let parent = file.parent
         while (parent !== -1) {
-            if (!fileSizes.has(parent)) {
-                fileSizes.set(parent, {size: 0})
-            } 
-            
             fileSizes.get(parent)!.size += file.size
             parent = fileMap.get(parent)!.parent
         }
