@@ -2,7 +2,6 @@ import "./CardItems.css";
 
 interface Props {
   courseCode: string;
-  stars?: string;
   reviews: number;
   courseName: string;
   termsOffered: string[];
@@ -10,7 +9,6 @@ interface Props {
 
 const CardItems = ({
   courseCode,
-  stars,
   reviews,
   courseName,
   termsOffered,
