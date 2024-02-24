@@ -67,17 +67,24 @@ function kLargestCategories(files: FileData[], k: number): string[] {
  * Task 3
  */
 function largestFileSize(files: FileData[]): number {
+    if (files.length === 0) {
+        return 0;
+    }
+
     const fileSizes: Map<number, {size: number}> =new Map() 
     const fileMap: Map<number, FileData>=new Map()
     
+    // Map file_id to file and file_id to size
     for (const file of files) {
         fileMap.set(file.id, file)
         fileSizes.set(file.id, {size: 0})
     } 
 
+    // Add filesizes
     for (const file of files) {
         fileSizes.get(file.id)!.size += file.size
 
+        // Add child file sizes to all parents
         let parent = file.parent
         while (parent !== -1) {
             fileSizes.get(parent)!.size += file.size
@@ -87,6 +94,7 @@ function largestFileSize(files: FileData[]): number {
 
     const fileSizesArray = Array.from(fileSizes, ([id, {size}]) => ({id, size}))
 
+    // Get max
     let maxFileSize = fileSizesArray[0].size
     fileSizesArray.forEach(file => {
         maxFileSize = Math.max(file.size, maxFileSize)
@@ -139,12 +147,93 @@ console.assert(arraysEqual(
 ));
 
 // Additional tests
-// console.log(kLargestCategories(testFiles, 3))
-// console.log(kLargestCategories(testFiles, 30))
+
+//Empty
+console.assert(arraysEqual(
+    leafFiles([]),
+    []
+));
+
+// Single
+console.assert(arraysEqual(
+    leafFiles([{ id: 1, name: "Document.txt", categories: ["Documents"], parent: -1, size: 1024 }]),
+    ["Document.txt"]
+));
+
+// Dependent
+console.assert(arraysEqual(
+    leafFiles([
+        { id: 1, name: "File1.txt", categories: ["Documents"], parent: 2, size: 1024 },
+        { id: 2, name: "File2.txt", categories: ["Documents"], parent: 1, size: 2048 }
+    ]),
+    []
+));
+
+// Multiple leaf files
+console.assert(arraysEqual(
+    leafFiles([
+        { id: 1, name: "Document.txt", categories: ["Documents"], parent: -1, size: 1024 },
+        { id: 2, name: "Image.jpg", categories: ["Media", "Photos"], parent: -1, size: 2048 }
+    ]),
+    ["Document.txt", "Image.jpg"]
+));
+
+// Duplicate
+console.assert(arraysEqual(
+    leafFiles([
+        { id: 1, name: "Document.txt", categories: ["Documents"], parent: -1, size: 1024 },
+        { id: 2, name: "Document.txt", categories: ["Documents"], parent: -1, size: 2048 }
+    ]),
+    ["Document.txt", "Document.txt"]
+));
+
+
+
+// Task 2 test
 
 console.assert(arraysEqual(
     kLargestCategories(testFiles, 3),
     ["Documents", "Folder", "Media"]
 ));
 
+
+// Empty
+console.assert(arraysEqual(
+    kLargestCategories([], 3),
+    []
+));
+
+// Single file
+console.assert(arraysEqual(
+    kLargestCategories([{ id: 1, name: "Document.txt", categories: ["Documents"], parent: -1, size: 1024 }], 1),
+    ["Documents"]
+));
+
+// Single file with 2 categories
+console.assert(arraysEqual(
+    kLargestCategories([{ id: 1, name: "Document.txt", categories: ["Documents", "Text"], parent: -1, size: 1024 }], 1),
+    ["Documents"]
+));
+
+
+
+// Task 3 test
+
 console.assert(largestFileSize(testFiles) == 20992)
+
+// Empty
+console.assert(largestFileSize([]) == 0);
+
+// 1 file
+console.assert(largestFileSize([{ id: 1, name: "Document.txt", categories: ["Documents"], parent: -1, size: 1024 }]) == 1024);
+
+// File with no children
+console.assert(largestFileSize([{ id: 1, name: "Folder", categories: ["Folder"], parent: -1, size: 0 }]) == 0);
+
+// Grandchildren
+console.assert(largestFileSize([
+    { id: 1, name: "Folder", categories: ["Folder"], parent: -1, size: 3 },
+    { id: 2, name: "Subfolder", categories: ["Folder"], parent: 1, size: 1 },
+    { id: 3, name: "Document.txt", categories: ["Documents"], parent: 2, size: 1024 }
+]) == 1028);
+
