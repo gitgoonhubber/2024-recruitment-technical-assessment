@@ -1,2 +1,5 @@
 Please detail the instructions to view your solution here:
+- head into the react-app folder
+- npm install
+- npm run dev
 
