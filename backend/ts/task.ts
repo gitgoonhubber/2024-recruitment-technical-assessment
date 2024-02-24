@@ -1,3 +1,4 @@
+import { stringify } from "querystring";
 
 type FileData = {
     id: number,
@@ -11,21 +12,94 @@ type FileData = {
  * Task 1
  */
 function leafFiles(files: FileData[]): string[] {
-    return [];
+    const parentFiles: Set<number> = new Set()
+    const leafFiles: string[] = []
+    
+    files.forEach(file => {
+        if (file.parent !== -1) {
+            parentFiles.add(file.parent)
+        }
+    })
+
+    files.forEach(file => {
+        if (!parentFiles.has(file.id)) {
+            leafFiles.push(file.name)
+        }
+    })
+
+    return leafFiles;
 }
 
 /**
  * Task 2
  */
 function kLargestCategories(files: FileData[], k: number): string[] {
-    return [];
+    const categoryMap: Map<string, {count: number, size: number}>=new Map()
+    
+    // Create map where key is category and value is object containing count and filesize of a category
+    for (const file of files) {
+        for (const category of file.categories) {
+            if (!categoryMap.has(category)) {
+                categoryMap.set(category, {count: 0, size: 0})
+            }
+            
+            categoryMap.get(category)!.count++
+            categoryMap.get(category)!.size += file.size
+        }
+    }
+
+    // Convert map into array of objects
+    let categoryArray = Array.from(categoryMap, ([category, {count, size}]) => ({category, count, size})) 
+
+    // Sort in descending order of count. If count is equal, prioritise alphabetical order
+    categoryArray.sort((a, b) => {
+        if (a.count === b.count) {
+            return a.category.localeCompare(b.category)
+        } else {
+            return b.count - a.count
+        }
+    })
+
+    return categoryArray.slice(0, k).map(obj => obj.category)
 }
 
 /**
  * Task 3
  */
 function largestFileSize(files: FileData[]): number {
-    return 0;
+    const fileSizes: Map<number, {size: number}> =new Map() 
+    const fileMap: Map<number, FileData>=new Map()
+    
+    for (const file of files) {
+        fileMap.set(file.id, file)
+    } 
+
+    for (const file of files) {
+        if (!fileSizes.has(file.id)) {
+            fileSizes.set(file.id, {size: 0})
+        }
+
+        fileSizes.get(file.id)!.size += file.size
+
+        let parent = file.parent
+        while (parent !== -1) {
+            if (!fileSizes.has(parent)) {
+                fileSizes.set(parent, {size: 0})
+            } 
+            
+            fileSizes.get(parent)!.size += file.size
+            parent = fileMap.get(parent)!.parent
+        }
+    }
+
+    const fileSizesArray = Array.from(fileSizes, ([id, {size}]) => ({id, size}))
+
+    let maxFileSize = fileSizesArray[0].size
+    fileSizesArray.forEach(file => {
+        maxFileSize = Math.max(file.size, maxFileSize)
+    })
+
+    return maxFileSize;
 }
 
 
@@ -55,6 +129,7 @@ const testFiles: FileData[] = [
     { id: 233, name: "Folder3", categories: ["Folder"], parent: -1, size: 4096 },
 ];
 
+
 console.assert(arraysEqual(
     leafFiles(testFiles).sort((a, b) => a.localeCompare(b)),
     [
@@ -69,6 +144,10 @@ console.assert(arraysEqual(
         "Video.mp4"
     ]
 ));
+
+// Additional tests
+// console.log(kLargestCategories(testFiles, 3))
+// console.log(kLargestCategories(testFiles, 30))
 
 console.assert(arraysEqual(
     kLargestCategories(testFiles, 3),
