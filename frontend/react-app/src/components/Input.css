@@ -30,17 +30,20 @@ input::placeholder {
 
 .blank-box {
     border: 2.5px solid black;
-    border-radius: 0.25rem;
-    border-top: none;
-    width: auto;
-    height: 300px;
-    margin-bottom: -200px;
-    z-index: 1;
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     background-color: white;
-    padding: 15px;
+    width: 75%;
+    height: 50%;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(100000px);
     display: flex;
-    justify-content: end;
     align-items: start;
+    justify-content: end;
+    padding: 20px 20px;
+
 }
 
 .close-box {
